@@ -1,10 +1,29 @@
 import getRequestHash from '../authentication/getRequestHash.js';
+import getId from '../serialization/getId.js';
 import { Image, MaxInt, Playlist, SimplifiedAlbum, Track } from './../types';
 import EndpointsBase from './EndpointsBase.js';
 
 export default class PlaylistsEndpoints extends EndpointsBase {
 
-    public async getPlaylist(uri: string, offset: number = 0, limit: MaxInt<100> = 100): Promise<Playlist<Track>> {
+    public async getFull(uri: string) {
+        let offset = 0;
+        const playlist = await this.get(uri, offset, 100)
+
+        // Check if more tracks can be loaded
+        let hasMoreResults = playlist.tracks.offset + playlist.tracks.limit < playlist.tracks.total;
+        while (hasMoreResults) {
+
+            offset += 100;
+            const result = await this.get(uri, offset, 100)
+
+            // Append tracks
+            playlist.tracks.items = playlist.tracks.items.concat(result.tracks.items)
+            hasMoreResults = result.tracks.offset + result.tracks.limit < result.tracks.total;
+        }
+        return playlist;
+    }
+
+    public async get(uri: string, offset: number = 0, limit: MaxInt<100> = 100): Promise<Playlist<Track>> {
 
         if (uri.split(':').length != 3)
             throw new Error(`A playlist uri should be structured as "spotify:playlist:uid"`)
@@ -36,6 +55,7 @@ export default class PlaylistsEndpoints extends EndpointsBase {
         const { pagingInfo, totalCount } = content;
 
         const result: Playlist<Track> = {
+            id: getId(playlistV2.uri),
             description: playlistV2.description,
             href: playlistV2.sharingInfo.shareUrl,
             images,
@@ -48,6 +68,7 @@ export default class PlaylistsEndpoints extends EndpointsBase {
                     const { data } = item.itemV2;
                     const { albumOfTrack } = data;
                     const album: SimplifiedAlbum = {
+                        id: getId(albumOfTrack.uri),
                         uri: albumOfTrack.uri,
                         name: albumOfTrack.name,
                         images: albumOfTrack.coverArt.sources,
@@ -55,6 +76,7 @@ export default class PlaylistsEndpoints extends EndpointsBase {
                     }
                     const artists = data.artists.items.map(artist => ({ name: artist.profile.name, uri: artist.uri }))
                     return {
+                        id: getId(data.uri),
                         album,
                         artists,
                         discNumber: data.discNumber,

@@ -6,5 +6,13 @@ export {
 
 export type * from "./types.js";
 
-const test = new OpenSpotifyApi()
-test.playlists.getPlaylist('spotify:playlist:37i9dQZF1EIhoSaISLaaJc')
+// const test = new OpenSpotifyApi()
+// test.playlists.get('spotify:playlist:37i9dQZF1EIhoSaISLaaJc')
+// test.playlists.getFull('spotify:playlist:37i9dQZF1EIhoSaISLaaJc') // 50 tracks
+// test.playlists.getFull('spotify:playlist:37i9dQZF1DWWEJlAGA9gs0') // 187 tracks
+//     .then((result) => {
+//         console.log(result.tracks.items.length)
+//     })
+//     .catch((err) => {
+//         console.log(err)
+//     })

@@ -1,6 +1,6 @@
 {
     "name": "@jjdenhertog/open-spotify-sdk",
-    "version": "1.0.0",
+    "version": "1.0.4",
     "description": "A typescript SDK for the Open Spotify Web API",
     "scripts": {
         "deploy": "tsc && npm version patch --no-git-tag-version && cp package.json ./dist && cp README.md ./dist && cd dist && npm publish --access public",
@@ -26,8 +26,5 @@
     "keywords": [
         "spotify",
         "open"
-    ],
-    "dependencies": {
-        "axios": "^1.7.9"
-    }
+    ]
 }

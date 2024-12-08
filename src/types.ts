@@ -19,6 +19,7 @@ export type ClientToken = {
     }
 }
 interface AlbumBase {
+    id: string
     images: Image[]
     name: string
     uri: string
@@ -47,6 +48,7 @@ export interface Page<TItemType> {
 
 
 export interface SimplifiedTrack {
+    id: string
     artists: SimplifiedArtist[]
     discNumber: number
     trackNumber: number
@@ -96,6 +98,7 @@ export interface Image {
 }
 
 interface PlaylistBase {
+    id: string
     description: string
     href: string
     images: Image[]

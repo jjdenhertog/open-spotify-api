@@ -30,6 +30,12 @@ const sdk = OpenSpotifyApi()
 The code snippet below loads a playlist and all tracks related to that playlist.
 
 ```typescript
+const playlist = await sdk.playlists.getFull('spotify:playlist:37i9dQZF1EIhoSaISLaaJc')
+```
+
+Or if you prefer to do the operation manually it would look like this.
+
+```typescript
 
 let offset = 0;
 const limit = 50;
@@ -43,7 +49,7 @@ while(hasMoreResults){
     const result = await sdk.playlists.get('spotify:playlist:37i9dQZF1EIhoSaISLaaJc', offset, limit)
     
     // Append tracks
-    playlist.tracks = playlist.tracks.concat(result.tracks)
+    playlist.tracks.items = playlist.tracks.items.concat(result.tracks.items)
     hasMoreResults = result.tracks.offset + result.tracks.limit < result.tracks.total;
 }
     
