@@ -37,16 +37,17 @@ Or if you prefer to do the operation manually it would look like this.
 
 ```typescript
 
+const playlistUri = 'spotify:playlist:37i9dQZF1EIhoSaISLaaJc'
 let offset = 0;
 const limit = 50;
-const playlist = await sdk.playlists.get('spotify:playlist:37i9dQZF1EIhoSaISLaaJc', offset, limit)
+const playlist = await sdk.playlists.get(playlistUri, offset, limit)
 
 // Check if more tracks can be loaded
 let hasMoreResults = playlist.tracks.offset + playlist.tracks.limit < playlist.tracks.total;
 while(hasMoreResults){
 
     offset += limit;
-    const result = await sdk.playlists.get('spotify:playlist:37i9dQZF1EIhoSaISLaaJc', offset, limit)
+    const result = await sdk.playlists.get(playlistUri, offset, limit)
     
     // Append tracks
     playlist.tracks.items = playlist.tracks.items.concat(result.tracks.items)
